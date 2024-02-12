@@ -4,6 +4,7 @@ package com.movie.springboot3.controller;
 import com.movie.springboot3.model.Student;
 import com.movie.springboot3.model.Teacher;
 import com.movie.springboot3.repository.StudentRepository;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class StudentController {
         URI uri = URI.create(
                 ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + student.getId()).toUriString());
         return ResponseEntity.created(uri).body(student);
+    }
+
+    @GetMapping("/students/fullname")
+    public ResponseEntity<List<Student>> findStudent(@RequestParam String name) {
+        return ResponseEntity.ok(studentRepository.findByFullNameContaining(name));
     }
 }
 
