@@ -26,7 +26,7 @@ public class TeacherController {
     }
 
     @GetMapping("/after")
-    public ResponseEntity<List<Teacher>> getTeachersAfter(@RequestParam LocalDate date) {
+    public ResponseEntity<List<Teacher>> getAllTeachers(@RequestParam LocalDate date) {
         return ResponseEntity.ok(teacherRepository.findByDobAfter(date));
     }
 
