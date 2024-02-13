@@ -20,6 +20,8 @@ public class Teacher {
 
     private LocalDate dob;
 
+    private int salary;
+
     // Getters and setters (omitted for brevity)
 
     public Long getId() {
@@ -31,6 +33,13 @@ public class Teacher {
         return name;
     }
 
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
     public void setName(String name) {
         this.name = name;
     }

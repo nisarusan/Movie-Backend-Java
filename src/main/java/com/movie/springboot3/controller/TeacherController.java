@@ -1,11 +1,11 @@
 package com.movie.springboot3.controller;
 
-import com.movie.springboot3.model.Teacher;
-import com.movie.springboot3.repository.TeacherRepository;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.movie.springboot3.dto.TeacherDto;
+import com.movie.springboot3.service.TeacherService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,25 +17,40 @@ import java.util.List;
 @RequestMapping("/teachers")
 public class TeacherController {
 
-    //Auto wired methode is er, maar er is ook d.m.v. een object zelf te maken
-    @Autowired
-    private TeacherRepository teacherRepository;
+    private final TeacherService service;
+
+    public TeacherController(TeacherService service) {
+        this.service = service;
+    }
     @GetMapping
-    public ResponseEntity<List<Teacher>> getAllTeachers() {
-         return ResponseEntity.ok(teacherRepository.findAll());
+    public ResponseEntity<List<TeacherDto>> getAllTeachers() {
+        List <TeacherDto> teacherDto = service.getAllTeachers();
+         return ResponseEntity.ok().body(teacherDto);
     }
 
-    @GetMapping("/after")
-    public ResponseEntity<List<Teacher>> getAllTeachers(@RequestParam LocalDate date) {
-        return ResponseEntity.ok(teacherRepository.findByDobAfter(date));
-    }
+//    @GetMapping("/after")
+//    public ResponseEntity<List<TeacherDto>> getAllTeachersAfter(@RequestParam LocalDate date) {
+//        List<TeacherDto> teacherDto = service.getAllTeachersAfter(LocalDate date);
+//        return ResponseEntity.ok(service.findByDobAfter(date));
+//    }
 
+    //Object van gemaakt, omdat situatie is waarin twee verschillende types er zijn;
     @PostMapping
-    public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher) {
-        teacherRepository.save(teacher);
+    public ResponseEntity<Object> addTeacher(@Valid @RequestBody TeacherDto teacherDto, BindingResult br) {
+        if(br.hasFieldErrors()) {
+           StringBuilder sb = new StringBuilder();
+            for(FieldError fe : br.getFieldErrors()) {
+                sb.append(fe.getField());
+                sb.append(" : " );
+                sb.append(fe.getDefaultMessage());
+                sb.append("\n");
+           }
+            return ResponseEntity.badRequest().body(sb.toString());
+        } else {
+        teacherDto = service.createTeacher(teacherDto);
         URI uri = URI.create(
-                ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + teacher.getId()).toUriString());
-       return ResponseEntity.created(uri).body(teacher);
+                ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + teacherDto.id).toUriString());
+       return ResponseEntity.created(uri).body(teacherDto);
+       }
     }
-
 }
