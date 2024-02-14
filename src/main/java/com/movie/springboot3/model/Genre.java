@@ -1,19 +1,16 @@
 package com.movie.springboot3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Roles")
-public class Role {
+@Table(name = "Genres")
+public class Genre {
     @Id
     @GeneratedValue
     Long id;
 
+    @Column
     String name;
-
 
     public Long getId() {
         return id;
@@ -26,6 +23,4 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-
-
 }
