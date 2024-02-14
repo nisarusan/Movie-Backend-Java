@@ -3,6 +3,8 @@ package com.movie.springboot3.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -21,6 +23,19 @@ public class Teacher {
     private LocalDate dob;
 
     private int salary;
+
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    //Een teacher kan meerdere Courses hebben
+    @ManyToMany(mappedBy = "teachers")
+    private Set<Course> courses = new HashSet<>();
 
     // Getters and setters (omitted for brevity)
 
