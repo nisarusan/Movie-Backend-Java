@@ -3,6 +3,7 @@ package com.movie.springboot3;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -48,7 +49,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                                 //permit all hoeft niet ingelogd accepteert iedereen
-                                .requestMatchers("/hello").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/votes").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/votes").hasRole("USER")
+                                .requestMatchers("/votes").hasRole("ADMIN")
                                 .requestMatchers("/secret").hasRole("ADMIN")
 //                        .hasAnyRole("USER", "ADMIN")
                                 .anyRequest().denyAll()
