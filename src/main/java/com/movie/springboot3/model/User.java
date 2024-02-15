@@ -4,6 +4,7 @@ package com.movie.springboot3.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -30,16 +31,16 @@ public class User {
     @Column(name = "favorite_movie")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // adjust this based on your database schema
-    List<Movie> favoriteMovie;
+    Set<Movie> favoriteMovie;
 
     @Column(name = "movie_seen")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    List<Movie> moviesSeen;
+    Set<Movie> moviesSeen;
     @Column(name = "movies_rated")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    List<Movie> moviesRated;
+    Set<Movie> moviesRated;
 
     public Long getId() {
         return id;
@@ -77,27 +78,27 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public List<Movie> getFavoriteMovie() {
+    public Set<Movie> getFavoriteMovie() {
         return favoriteMovie;
     }
 
-    public void setFavoriteMovie(List<Movie> favoriteMovie) {
+    public void setFavoriteMovie(Set<Movie> favoriteMovie) {
         this.favoriteMovie = favoriteMovie;
     }
 
-    public List<Movie> getMoviesSeen() {
+    public Set<Movie> getMoviesSeen() {
         return moviesSeen;
     }
 
-    public void setMoviesSeen(List<Movie> moviesSeen) {
+    public void setMoviesSeen(Set<Movie> moviesSeen) {
         this.moviesSeen = moviesSeen;
     }
 
-    public List<Movie> getMoviesRated() {
+    public Set<Movie> getMoviesRated() {
         return moviesRated;
     }
 
-    public void setMoviesRated(List<Movie> moviesRated) {
+    public void setMoviesRated(Set<Movie> moviesRated) {
         this.moviesRated = moviesRated;
     }
 }
