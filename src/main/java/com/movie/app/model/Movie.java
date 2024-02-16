@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movies")
@@ -16,14 +17,23 @@ public class Movie {
     @Column
     String title;
 
+    @Column(name = "image_url")
+    String imageUrl;
+
     @Column
     String director;
+
 
     @Column(name = "release_date")
     LocalDate releaseDate;
 
-    @Column(name = "genres")
-    List<String> genre;
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genre;
 
     @Column
     String description;
@@ -31,9 +41,11 @@ public class Movie {
     @Column
     int duration;
 
-    @Column
+    @Column(name = "average_rating")
     double averageRating;
 
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private Set<Rating> ratings;
 
     public Long getId() {
         return id;
@@ -63,11 +75,11 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public List<String> getGenre() {
+    public Set<Genre> getGenre() {
         return genre;
     }
 
-    public void setGenre(List<String> genre) {
+    public void setGenre(Set<Genre> genre) {
         this.genre = genre;
     }
 
@@ -93,5 +105,13 @@ public class Movie {
 
     public void setAverageRating(double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

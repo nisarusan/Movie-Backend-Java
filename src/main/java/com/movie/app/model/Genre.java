@@ -7,10 +7,17 @@ import jakarta.persistence.*;
 public class Genre {
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column
-    String name;
+    private String name;
+
+    public Genre() {
+    }
+
+    public Genre(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

@@ -14,32 +14,43 @@ public class User {
     Long id;
 
     @Column
-    String username;
+    private String username;
 
     @Column
-    String email;
+    private String password;
 
     @Column
-    String address;
+    private String email;
+
+    @Column
+    private String address;
 
     @Column(name = "profile_url")
-    String profileUrl;
-
+    private String profileUrl;
 
 
     @Column(name = "favorite_movie")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // adjust this based on your database schema
-    Set<Movie> favoriteMovie;
+    private Set<Movie> favoriteMovie;
 
     @Column(name = "movie_seen")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    Set<Movie> moviesSeen;
+    private Set<Movie> moviesSeen;
     @Column(name = "movies_rated")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    Set<Movie> moviesRated;
+    private Set<Movie> moviesRated;
+
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Rating> ratings;
 
     public Long getId() {
         return id;
@@ -99,5 +110,13 @@ public class User {
 
     public void setMoviesRated(Set<Movie> moviesRated) {
         this.moviesRated = moviesRated;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
