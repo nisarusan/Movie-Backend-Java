@@ -3,10 +3,12 @@ package com.movie.app.service;
 import com.movie.app.dto.MovieDto;
 import com.movie.app.model.Movie;
 import com.movie.app.repository.MovieRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
@@ -32,6 +34,8 @@ public class MovieService {
         return movieDto;
     }
 
+
+    //get all Movies
     public List<MovieDto> allMovies() {
         List<Movie> moviesList = repos.findAll();
         List<MovieDto> movieDtoList = new ArrayList<>();
@@ -40,6 +44,32 @@ public class MovieService {
             movieDtoList.add(movieDto);
         }
         return movieDtoList;
+    }
+
+    //get Movie by Id
+    public MovieDto getMovie(Long id) {
+        Optional<Movie> optionalMovie = repos.findById(id);
+
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            return movieDto(movie);
+        } else {
+            // Handle the case where the movie with the given ID is not found
+            // For now, let's return null, but you might want to throw an exception or handle it differently based on your use case.
+            return null;
+        }
+    }
+
+    //get Movie by String
+    public MovieDto searchMovie(String title) {
+        Optional<Movie> optionalMovie = repos.findByTitle(title);
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            MovieDto movieDto = movieDto(movie);
+            return movieDto(movie);
+        } else {
+           return null;
+        }
     }
 
 

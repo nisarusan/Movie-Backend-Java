@@ -20,11 +20,37 @@ public class MoviesController {
         this.service = service;
     }
 
-    @GetMapping("/movie")
+    @GetMapping("/movies")
     public ResponseEntity<List<MovieDto>> getAllMovies() {
         List<MovieDto> movieDto = service.allMovies();
         return ResponseEntity.ok().body(movieDto);
     }
+
+    //get all movies
+    @GetMapping("/movie/{id}")
+    public ResponseEntity<MovieDto> getMovie(@PathVariable Long id) {
+        MovieDto movieDto = service.getMovie(id);
+        if (movieDto != null) {
+            return ResponseEntity.ok().body(movieDto);
+        } else {
+            //  error page
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //getMovie by Title
+    @GetMapping("/movie")
+    public ResponseEntity<MovieDto> getMovieByTitle(@RequestParam String title) {
+        MovieDto movieDto = service.searchMovie(title);
+        if (movieDto != null) {
+            return ResponseEntity.ok().body(movieDto);
+        } else {
+            // Movie not found, return a ResponseEntity with NOT_FOUND status
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //add new Movies
     @PostMapping("/movie")
     public ResponseEntity<MovieDto> addMovie(@RequestBody MovieDto movieDto) {
         movieDto = service.addMovie(movieDto);

@@ -47,9 +47,12 @@ public class SecurityConfig {
         http
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+
+                                .requestMatchers("/**").permitAll()
                                 //permit all hoeft niet ingelogd accepteert iedereen
-                                .requestMatchers("/movie").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/movie").permitAll()
+
+//                                .requestMatchers("/movie").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/movie").permitAll()
 //                                .requestMatchers(HttpMethod.POST, "/votes").hasRole("USER")
 //                                .requestMatchers("/movie").hasRole("ADMIN")
 //                        .hasAnyRole("USER", "ADMIN")
