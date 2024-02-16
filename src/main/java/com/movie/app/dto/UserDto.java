@@ -1,6 +1,7 @@
 package com.movie.app.dto;
 
 import com.movie.app.model.Movie;
+import com.movie.app.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,6 +26,8 @@ public class UserDto {
     public String address;
 
     public String profileUrl;
+
+    public Set<Role> roles;
 
     public Set<Movie> favoriteMovie;
     public Set<Movie> moviesSeen;
