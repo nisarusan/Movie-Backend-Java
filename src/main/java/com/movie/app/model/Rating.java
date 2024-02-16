@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ratings")
-
 public class Rating {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -19,10 +18,10 @@ public class Rating {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-
     @Column
     private int rating;
 
+    // Constructors, getters, and setters...
 
     public Rating() {
     }
@@ -33,8 +32,14 @@ public class Rating {
         this.rating = rating;
     }
 
+    // Getters and Setters...
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -53,11 +58,11 @@ public class Rating {
         this.movie = movie;
     }
 
-    public int getRatingScore() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRatingScore(int ratingScore) {
-        this.rating = ratingScore;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

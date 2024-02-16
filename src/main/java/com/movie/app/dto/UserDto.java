@@ -2,80 +2,31 @@ package com.movie.app.dto;
 
 import com.movie.app.model.Movie;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
 public class UserDto {
+
     public Long id;
+
+    @NotBlank(message = "Lege berichten zijn niet toegestaan")
+    @Size(min=3, max=128, message = "Minimaal 3 en maximaal 128 karakters toegestaan")
     public String username;
+    @NotBlank(message = "Lege berichten zijn niet toegestaan")
+
     public String email;
+    @NotBlank(message = "Lege berichten zijn niet toegestaan")
+
     public String address;
+
     public String profileUrl;
+
     public Set<Movie> favoriteMovie;
     public Set<Movie> moviesSeen;
     public Set<Movie> moviesRated;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getProfileUrl() {
-        return profileUrl;
-    }
-
-    public void setProfileUrl(String profileUrl) {
-        this.profileUrl = profileUrl;
-    }
-
-    public Set<Movie> getFavoriteMovie() {
-        return favoriteMovie;
-    }
-
-    public void setFavoriteMovie(Set<Movie> favoriteMovie) {
-        this.favoriteMovie = favoriteMovie;
-    }
-
-    public Set<Movie> getMoviesSeen() {
-        return moviesSeen;
-    }
-
-    public void setMoviesSeen(Set<Movie> moviesSeen) {
-        this.moviesSeen = moviesSeen;
-    }
-
-    public Set<Movie> getMoviesRated() {
-        return moviesRated;
-    }
-
-    public void setMoviesRated(Set<Movie> moviesRated) {
-        this.moviesRated = moviesRated;
-    }
 }

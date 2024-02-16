@@ -27,25 +27,29 @@ public class Movie {
     @Column(name = "release_date")
     LocalDate releaseDate;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genre;
-
     @Column
     String description;
 
     @Column
     int duration;
 
+
+    //this is just general rated put by us or copied from imdb
     @Column(name = "average_rating")
     double averageRating;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    private Set<Rating> ratings;
+
+//
+////    this are user's rating
+//    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST)
+//    private Set<Rating> ratings;
 
     public Long getId() {
         return id;
@@ -114,4 +118,12 @@ public class Movie {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+//    public Set<Rating> getRatings() {
+//        return ratings;
+//    }
+//
+//    public void setRatings(Set<Rating> ratings) {
+//        this.ratings = ratings;
+//    }
 }
