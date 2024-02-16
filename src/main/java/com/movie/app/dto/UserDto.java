@@ -14,6 +14,9 @@ public class UserDto {
     @NotBlank(message = "Lege berichten zijn niet toegestaan")
     @Size(min=3, max=128, message = "Minimaal 3 en maximaal 128 karakters toegestaan")
     public String username;
+
+
+    public String password;
     @NotBlank(message = "Lege berichten zijn niet toegestaan")
 
     public String email;

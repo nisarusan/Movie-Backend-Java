@@ -18,6 +18,8 @@ public class MovieService {
         this.repos = repos;
     }
 
+
+    //add new movies
     public MovieDto addMovie(MovieDto movieDto) {
         Movie movie = dtoToMovie(movieDto);
         movie.setTitle(movieDto.title);
@@ -61,17 +63,16 @@ public class MovieService {
     }
 
     //get Movie by String
-    public MovieDto searchMovie(String title) {
-        Optional<Movie> optionalMovie = repos.findByTitle(title);
-        if (optionalMovie.isPresent()) {
-            Movie movie = optionalMovie.get();
-            MovieDto movieDto = movieDto(movie);
-            return movieDto(movie);
-        } else {
-           return null;
-        }
-    }
+    public List<MovieDto> searchMovies(String title) {
+        List<Movie> movies = repos.findByTitle(title);
+        List<MovieDto> movieDtos = new ArrayList<>();
 
+        for (Movie movie : movies) {
+            movieDtos.add(movieDto(movie));
+        }
+
+        return movieDtos;
+    }
 
     //Movie DTO Mapper
     public MovieDto movieDto(Movie movie) {
@@ -104,6 +105,5 @@ public class MovieService {
         movie.setReleaseDate(movieDto.releaseDate);
         return movie;
     }
-
 
 }

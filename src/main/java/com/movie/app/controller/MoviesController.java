@@ -40,8 +40,8 @@ public class MoviesController {
 
     //getMovie by Title
     @GetMapping("/movie")
-    public ResponseEntity<MovieDto> getMovieByTitle(@RequestParam String title) {
-        MovieDto movieDto = service.searchMovie(title);
+    public ResponseEntity<List<MovieDto>> getMovieByTitle(@RequestParam String title) {
+        List<MovieDto> movieDto = service.searchMovies(title);
         if (movieDto != null) {
             return ResponseEntity.ok().body(movieDto);
         } else {
