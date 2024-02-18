@@ -33,16 +33,16 @@ public class User {
 
     @Column(name = "favorite_movie")
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id") // adjust this based on your database schema
+    @JoinColumn(name = "favorite_movie_id") // adjust this based on your database schema
     private Set<Movie> favoriteMovie = new HashSet<>();
 
     @Column(name = "movie_seen")
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "movies_seen_id")
     private Set<Movie> moviesSeen = new HashSet<>();
     @Column(name = "movies_rated")
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "movies_rated_id")
     private Set<Movie> moviesRated = new HashSet<>();
 
     @ManyToMany

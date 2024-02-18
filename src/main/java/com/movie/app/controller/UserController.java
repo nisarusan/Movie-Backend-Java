@@ -86,7 +86,7 @@ public class UserController {
     }
 
 
-    //set seen movies
+// Add new seen movies
     @PostMapping("/user/{userId}/seen-movies")
     public ResponseEntity<Void> setUserSeenMovies(
             @PathVariable Long userId,
@@ -98,10 +98,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+
     //get seen movies
     @GetMapping("/user/{userId}/seen-movies")
     public ResponseEntity<Set<MovieDto>> getUserSeenMovies(@PathVariable Long userId) {
-        // Call the service method to retrieve the user's favorite movies
+        // Call the service method to retrieve the user's seen movies
         Set<MovieDto> seenMovies = service.getUserSeenMovies(userId);
 
         // Check if the user exists
@@ -112,6 +113,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 

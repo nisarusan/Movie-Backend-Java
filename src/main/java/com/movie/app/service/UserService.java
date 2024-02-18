@@ -117,26 +117,26 @@ public class UserService {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toSet());
 
+            // Add the movies to the user's seen set
             existingUser.setMoviesSeen(seenMovieEntities);
 
-            // Ensure that the user ID is not null
-            if (existingUser.getId() != null) {
-                repos.save(existingUser);
-                return userDto(existingUser);
-            } else {
-                throw new RuntimeException("User ID is null after setting favorite movies.");
-            }
+            // Save the changes
+            repos.save(existingUser);
+
+            // Return the updated user DTO
+            return userDto(existingUser);
         } else {
             throw new RuntimeException("User not found with ID: " + userId);
         }
     }
+
 
     // Get seen movies for a user
     public Set<MovieDto> getUserSeenMovies(Long userId) {
         User existingUser = repos.findById(userId).orElse(null);
 
         if (existingUser != null) {
-            // Map the favorite movies to MovieDto
+            // Map the seen movies to MovieDto
             return existingUser.getMoviesSeen().stream()
                     .map(movieService::movieDto)
                     .collect(Collectors.toSet());
