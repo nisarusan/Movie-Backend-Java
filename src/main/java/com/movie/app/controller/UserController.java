@@ -56,13 +56,35 @@ public class UserController {
     }
 
 
+
+    //set favorite movies
     @PostMapping("/user/{userId}/favorite-movies")
     public ResponseEntity<Void> setUserFavoriteMovies(
             @PathVariable Long userId,
-            @RequestBody Set<Long> favoriteMovie) {
-        service.setFavoriteMovies(userId, favoriteMovie);
+            @RequestBody Set<MovieDto> favoriteMovies) {
+
+        // Call the service method with the user ID and MovieDto set
+        service.setFavoriteMovies(userId, favoriteMovies);
+
         return ResponseEntity.ok().build();
     }
+
+    //get favorite movies
+
+    @GetMapping("/user/{userId}/favorite-movies")
+    public ResponseEntity<Set<MovieDto>> getUserFavoriteMovies(@PathVariable Long userId) {
+        // Call the service method to retrieve the user's favorite movies
+        Set<MovieDto> favoriteMovies = service.getUserFavoriteMovies(userId);
+
+        // Check if the user exists
+        if (favoriteMovies != null) {
+            return ResponseEntity.ok(favoriteMovies);
+        } else {
+            // Return 404 Not Found if the user is not found
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 }

@@ -57,7 +57,7 @@ public class UserService {
         return userDto;
     }
 
-//getUser By Id
+    //getUser By Id
     public UserDto getUserById(Long userId) {
         // Retrieve the user entity by ID from the repository
         Optional<User> optionalUser = repos.findById(userId);
@@ -67,25 +67,44 @@ public class UserService {
     }
 
     // Set favorite movies for a user
-    public UserDto setFavoriteMovies(Long userId, Set<Long> favoriteMovies) {
+    public UserDto setFavoriteMovies(Long userId, Set<MovieDto> favoriteMovies) {
         User existingUser = repos.findById(userId).orElse(null);
 
         if (existingUser != null) {
-            // Convert movie IDs to Movie entities
+            // Convert MovieDto objects to Movie entities
             Set<Movie> favoriteMovieEntities = favoriteMovies.stream()
-                    .map(movieService::getMovieById)
+                    .map(movieDto -> movieService.getMovieById(movieDto.id))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toSet());
 
             existingUser.setFavoriteMovie(favoriteMovieEntities);
-            repos.save(existingUser);
 
-            return userDto(existingUser);
+            // Ensure that the user ID is not null
+            if (existingUser.getId() != null) {
+                repos.save(existingUser);
+                return userDto(existingUser);
+            } else {
+                throw new RuntimeException("User ID is null after setting favorite movies.");
+            }
         } else {
             throw new RuntimeException("User not found with ID: " + userId);
         }
     }
-    //User Profile by ID
+
+    // Get favorite movies for a user
+    public Set<MovieDto> getUserFavoriteMovies(Long userId) {
+        User existingUser = repos.findById(userId).orElse(null);
+
+        if (existingUser != null) {
+            // Map the favorite movies to MovieDto
+            return existingUser.getFavoriteMovie().stream()
+                    .map(movieService::movieDto)
+                    .collect(Collectors.toSet());
+        } else {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+    }
+
 
     //user DTO MAPPER
     public UserDto userDto(User user) {
