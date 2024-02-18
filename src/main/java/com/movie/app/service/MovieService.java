@@ -56,7 +56,6 @@ public class MovieService {
             return movieDto(movie);
         } else {
             // Handle the case where the movie with the given ID is not found
-            // For now, let's return null, but you might want to throw an exception or handle it differently based on your use case.
             return null;
         }
     }
