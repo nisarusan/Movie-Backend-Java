@@ -132,4 +132,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
+    }
 }

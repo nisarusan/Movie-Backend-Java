@@ -5,6 +5,7 @@ import com.movie.app.dto.MovieDto;
 import com.movie.app.dto.UserDto;
 import com.movie.app.model.Authority;
 import com.movie.app.model.Movie;
+import com.movie.app.model.Rating;
 import com.movie.app.model.User;
 import com.movie.app.repository.AuthRepository;
 import com.movie.app.repository.MovieRepository;
@@ -144,6 +145,34 @@ public class UserService {
             throw new RuntimeException("User not found with ID: " + userId);
         }
     }
+
+    //set the rating for a movie made by the user
+    public void rateMovie(Long userId, Long movieId, double rating) {
+        User existingUser = repos.findById(userId).orElse(null);
+        Movie existingMovie = movieService.getMovieById(movieId);
+
+        if (existingUser != null && existingMovie != null) {
+            // Check if the user has already rated the movie
+            if (existingUser.getMoviesRated().stream().anyMatch(movie -> movie.getId().equals(movieId))) {
+                throw new RuntimeException("User has already rated this movie.");
+            }
+            // Create a new Rating entity
+            Rating newRating = new Rating();
+            newRating.setUser(existingUser);
+            newRating.setMovie(existingMovie);
+            newRating.setRating(rating);
+
+            // Add the new rating to the user's set of rated movies
+            existingUser.getMoviesRated().add(existingMovie);
+            existingUser.getRatings().add(newRating);
+
+            // Save the changes
+            repos.save(existingUser);
+        } else {
+            throw new RuntimeException("User or Movie not found with provided IDs.");
+        }
+    }
+
 
     //user DTO MAPPER
     public UserDto userDto(User user) {

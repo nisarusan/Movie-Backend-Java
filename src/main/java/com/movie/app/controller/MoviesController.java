@@ -58,4 +58,19 @@ public class MoviesController {
                 ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + movieDto.id).toUriString());
         return ResponseEntity.created(uri).body(movieDto);
     }
+
+    //get the average rating that been made by the users from the website. Working on users
+    @GetMapping("/movie/{movieId}/average-rating")
+    public ResponseEntity<Double> getAverageRatingForMovie(@PathVariable Long movieId) {
+        // Call the service method to get the average rating for the movie
+        Double averageRating = service.getAverageRatingForMovie(movieId);
+
+        // Check if the average rating is not null
+        if (averageRating != null) {
+            return ResponseEntity.ok(averageRating);
+        } else {
+            // Return 404 Not Found if the average rating is not available
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

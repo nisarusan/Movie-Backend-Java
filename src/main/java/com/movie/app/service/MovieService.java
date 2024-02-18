@@ -2,7 +2,9 @@ package com.movie.app.service;
 
 import com.movie.app.dto.MovieDto;
 import com.movie.app.model.Movie;
+import com.movie.app.model.Rating;
 import com.movie.app.repository.MovieRepository;
+import com.movie.app.repository.RatingRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,12 @@ import java.util.stream.Collectors;
 public class MovieService {
 
     private final MovieRepository repos;
-    public MovieService(MovieRepository repos) {
+    private final RatingRepository ratingRepos;
+    public MovieService(MovieRepository repos, RatingRepository ratingRepos) {
+
         this.repos = repos;
+        this.ratingRepos = ratingRepos;
+
     }
 
 
@@ -72,12 +78,24 @@ public class MovieService {
         return movieDtos;
     }
 
-    //get Movie by ID
-
     // Get Movie by ID
     public Movie getMovieById(Long id) {
         Optional<Movie> optionalMovie = repos.findById(id);
         return optionalMovie.orElse(null);
+    }
+
+    // Get the average rating for a movie from the Rating table
+    public Double getAverageRatingForMovie(Long movieId) {
+        List<Rating> ratings = ratingRepos.findByMovie_Id(movieId);
+
+        if (!ratings.isEmpty()) {
+            // Calculate the average rating
+            double sum = ratings.stream().mapToDouble(Rating::getRating).sum();
+            return sum / ratings.size();
+        } else {
+            // Return null if no ratings are found for the movie
+            return null;
+        }
     }
 
 

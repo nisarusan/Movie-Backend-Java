@@ -47,7 +47,7 @@ public class Movie {
 
 
 //
-////    this are user's rating
+////    this are user's rating need to correct this, find out how..
 //    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST)
 //    private Set<Rating> ratings;
 

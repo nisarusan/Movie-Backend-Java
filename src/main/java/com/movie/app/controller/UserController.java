@@ -114,6 +114,17 @@ public class UserController {
         }
     }
 
+    //set a rating of a movie by user
+    @PostMapping("/user/{userId}/rate-movie/{movieId}")
+    public ResponseEntity<Void> rateMovie(@PathVariable Long userId, @PathVariable Long movieId, @RequestParam double rating) {
+        //Call the service method to set the rating;
+        service.rateMovie(userId, movieId, rating);
+        return ResponseEntity.ok().build();
+    }
+
+    //get all a movies rated by the user
+    @GetMapping("user/")
+
 
 
 
