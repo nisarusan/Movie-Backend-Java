@@ -174,6 +174,22 @@ public class UserService {
     }
 
 
+    //Get the user's rated movies
+    public Set<MovieDto> getUserRatedMovies(Long userId) {
+        User existUser = repos.findById(userId).orElse(null);
+
+        if(existUser != null) {
+            //Retrieve the user's rated movie and map them to MovieDto
+            Set<MovieDto> ratedMovies = existUser.getMoviesRated()
+                    .stream()
+                    .map(movieService:: movieDto)
+                    .collect(Collectors.toSet());
+            return ratedMovies;
+        } else {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+    }
+
     //user DTO MAPPER
     public UserDto userDto(User user) {
         UserDto userDto = new UserDto();

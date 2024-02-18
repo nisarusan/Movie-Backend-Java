@@ -123,7 +123,19 @@ public class UserController {
     }
 
     //get all a movies rated by the user
-    @GetMapping("user/")
+    @GetMapping("user/{userId}/rated-movies")
+    public ResponseEntity<Set<MovieDto>> getUserRatedMovies(@PathVariable Long userId) {
+        // Call the service method to retrieve the user's rated movies
+        Set<MovieDto> ratedMovies = service.getUserRatedMovies(userId);
+
+        // Check if the user exists
+        if (ratedMovies != null) {
+            return ResponseEntity.ok(ratedMovies);
+        } else {
+            // Return 404 Not Found if the user is not found
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

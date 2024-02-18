@@ -3,6 +3,7 @@ package com.movie.app.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,10 +47,10 @@ public class Movie {
     double averageRating;
 
 
-//
-////    this are user's rating need to correct this, find out how..
-//    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST)
-//    private Set<Rating> ratings;
+    //ratings of users
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private Set<Rating> ratings = new HashSet<>();
+
 
     public Long getId() {
         return id;

@@ -18,7 +18,7 @@ public class Rating {
 
 
     @Column
-    double rating;
+    private double rating;
 
 
     public Long getId() {
