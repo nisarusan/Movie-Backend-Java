@@ -1,67 +1,61 @@
 package com.movie.app.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
+    private final DataSource dataSource;
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
 
-    //user credentials wordt in inmemory geinjecteerd
     @Bean
-    public UserDetailsService userDetailService(PasswordEncoder encoder) {
-        InMemoryUserDetailsManager man = new InMemoryUserDetailsManager();
-        UserDetails ud1 = User
-                .withUsername("karel")
-                .password(encoder.encode("pass"))
-                .roles("USER")
-                .build();
-        UserDetails ud2 = User
-                .withUsername("henk")
-                .password(encoder.encode("name"))
-                .roles("ADMIN")
-                .build();
-        man.createUser(ud1);
-        man.createUser(ud2);
-        return man;
-    }
+    protected SecurityFilterChain filter (HttpSecurity http) throws Exception {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
+                .csrf().disable()
+                .httpBasic().disable()
+                .cors().and()
+                .authorizeHttpRequests()
+                .requestMatchers("/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/info").hasRole("USER")
+                .requestMatchers("/users/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/admins").hasAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
+                .requestMatchers("/authenticate").permitAll()
 
-                                .requestMatchers("/**").permitAll()
-                                //permit all hoeft niet ingelogd accepteert iedereen
-
-//                                .requestMatchers("/movie").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/movie").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/votes").hasRole("USER")
-//                                .requestMatchers("/movie").hasRole("ADMIN")
-//                        .hasAnyRole("USER", "ADMIN")
-//                                .anyRequest().denyAll()
-                )
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .csrf(csrf -> csrf.disable());
+                .anyRequest().denyAll()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
-}
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("SELECT username, password, enabled" +
+                        " FROM users" +
+                        " WHERE username=?")
+                .authoritiesByUsernameQuery("SELECT username, authority" +
+                        " FROM authorities " +
+                        " WHERE username=?");
+        return authenticationManagerBuilder.build();
+    }
+} 

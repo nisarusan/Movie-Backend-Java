@@ -1,8 +1,10 @@
 package com.movie.app.model;
 
 
+import com.movie.app.dto.MovieDto;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,25 +34,28 @@ public class User {
     @Column(name = "favorite_movie")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // adjust this based on your database schema
-    private Set<Movie> favoriteMovie;
+    private Set<Movie> favoriteMovie = new HashSet<>();
 
     @Column(name = "movie_seen")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Set<Movie> moviesSeen;
+    private Set<Movie> moviesSeen = new HashSet<>();
     @Column(name = "movies_rated")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Set<Movie> moviesRated;
+    private Set<Movie> moviesRated = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "user_roles",
+    @JoinTable(
+            name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+            inverseJoinColumns = @JoinColumn(name = "authority_name"))
+    private Set<Authority> authorities;
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Rating> ratings;
+    private Set<Rating> ratings = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -112,12 +117,12 @@ public class User {
         this.moviesRated = moviesRated;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getPassword() {

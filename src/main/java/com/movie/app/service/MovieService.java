@@ -6,9 +6,8 @@ import com.movie.app.repository.MovieRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -74,6 +73,15 @@ public class MovieService {
         return movieDtos;
     }
 
+    //get Movie by ID
+
+    // Get Movie by ID
+    public Movie getMovieById(Long id) {
+        Optional<Movie> optionalMovie = repos.findById(id);
+        return optionalMovie.orElse(null);
+    }
+
+
     //Movie DTO Mapper
     public MovieDto movieDto(Movie movie) {
         MovieDto movieDto = new MovieDto();
@@ -106,4 +114,16 @@ public class MovieService {
         return movie;
     }
 
+    public Set<Movie> convertToMovieEntities(Set<MovieDto> favoriteMovies) {
+        Set<Movie> movieEntities = new HashSet<>();
+
+        for (MovieDto movieDto : favoriteMovies) {
+            Movie movie = new Movie();
+            movie.setId(movieDto.id);
+            // Set other properties as needed
+            movieEntities.add(movie);
+        }
+
+        return movieEntities;
+    }
 }

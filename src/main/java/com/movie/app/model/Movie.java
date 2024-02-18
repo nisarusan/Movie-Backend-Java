@@ -119,6 +119,10 @@ public class Movie {
         this.imageUrl = imageUrl;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 //    public Set<Rating> getRatings() {
 //        return ratings;
 //    }

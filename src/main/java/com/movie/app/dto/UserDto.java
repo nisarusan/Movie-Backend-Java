@@ -1,17 +1,18 @@
 package com.movie.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.movie.app.model.Authority;
 import com.movie.app.model.Movie;
-import com.movie.app.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.Set;
-
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
     public Long id;
-
     @NotBlank(message = "Lege berichten zijn niet toegestaan")
     @Size(min=3, max=128, message = "Minimaal 3 en maximaal 128 karakters toegestaan")
     public String username;
@@ -26,11 +27,16 @@ public class UserDto {
     public String address;
 
     public String profileUrl;
+    @JsonIgnore
+    public Set<Authority> authorities;
 
-    public Set<Role> roles;
-
+    @JsonIgnore
     public Set<Movie> favoriteMovie;
+
+    @JsonIgnore
     public Set<Movie> moviesSeen;
+
+    @JsonIgnore
     public Set<Movie> moviesRated;
 
 

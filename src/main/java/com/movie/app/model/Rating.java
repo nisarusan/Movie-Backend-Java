@@ -1,11 +1,10 @@
 package com.movie.app.model;
 
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "ratings")
 public class Rating {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,26 +12,14 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
+
     @Column
-    private int rating;
+    double rating;
 
-    // Constructors, getters, and setters...
-
-    public Rating() {
-    }
-
-    public Rating(User user, Movie movie, int rating) {
-        this.user = user;
-        this.movie = movie;
-        this.rating = rating;
-    }
-
-    // Getters and Setters...
 
     public Long getId() {
         return id;
@@ -58,11 +45,11 @@ public class Rating {
         this.movie = movie;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 }

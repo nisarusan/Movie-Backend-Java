@@ -2,7 +2,6 @@ package com.movie.app.dto;
 
 import com.movie.app.model.Genre;
 import com.movie.app.model.Rating;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Set;
