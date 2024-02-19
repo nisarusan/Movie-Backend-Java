@@ -1,7 +1,6 @@
 package com.movie.app.model;
 
 
-import com.movie.app.dto.MovieDto;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -77,7 +76,7 @@ public class User {
             name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_name"))
-    private Set<Authority> authorities;
+    private Set<Auth> authorities;
 
 
 
@@ -144,11 +143,11 @@ public class User {
         this.moviesRated = moviesRated;
     }
 
-    public Set<Authority> getAuthorities() {
+    public Set<Auth> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(Set<Auth> authorities) {
         this.authorities = authorities;
     }
 

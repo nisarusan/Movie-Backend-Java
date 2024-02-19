@@ -3,15 +3,12 @@ package com.movie.app.service;
 
 import com.movie.app.dto.MovieDto;
 import com.movie.app.dto.UserDto;
-import com.movie.app.model.Authority;
+import com.movie.app.model.Auth;
 import com.movie.app.model.Movie;
 import com.movie.app.model.Rating;
 import com.movie.app.model.User;
 import com.movie.app.repository.AuthRepository;
-import com.movie.app.repository.MovieRepository;
 import com.movie.app.repository.UserRepository;
-import com.movie.app.repository.MovieRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,7 +32,7 @@ public class UserService {
 
     //create User
     public UserDto createUser(UserDto userDto) {
-        Authority userRole = new Authority();
+        Auth userRole = new Auth();
         userRole.setName("ROLE_USER"); // Set the identifier value
         rolerepos.save(userRole);
 

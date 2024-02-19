@@ -1,10 +1,8 @@
 package com.movie.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.movie.app.model.Authority;
+import com.movie.app.model.Auth;
 import com.movie.app.model.Movie;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -28,7 +26,7 @@ public class UserDto {
 
     public String profileUrl;
     @JsonIgnore
-    public Set<Authority> authorities;
+    public Set<Auth> authorities;
 
     @JsonIgnore
     public Set<Movie> favoriteMovie;
