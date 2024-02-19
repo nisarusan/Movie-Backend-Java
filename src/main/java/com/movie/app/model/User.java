@@ -30,12 +30,11 @@ public class User {
     @Column(name = "profile_url")
     private String profileUrl;
 
-
+//v1
     @Column(name = "favorite_movie")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "favorite_movie_id") // adjust this based on your database schema
     private Set<Movie> favoriteMovie = new HashSet<>();
-
     @Column(name = "movie_seen")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "movies_seen_id")
@@ -44,6 +43,34 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "movies_rated_id")
     private Set<Movie> moviesRated = new HashSet<>();
+
+//    //v2
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
+//    @JoinTable(
+//            name = "favorite_movie",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "favorite_movie_id")
+//    )
+//    private Set<Movie> favoriteMovie = new HashSet<>();
+//
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
+//    @JoinTable(
+//            name = "movie_seen",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "movies_seen_id")
+//    )
+//    private Set<Movie> moviesSeen = new HashSet<>();
+//
+//
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
+//    @JoinTable(
+//            name = "movies_rated",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "movies_rated_id")
+//    )
+//    private Set<Movie> moviesRated = new HashSet<>();
+
+
 
     @ManyToMany
     @JoinTable(

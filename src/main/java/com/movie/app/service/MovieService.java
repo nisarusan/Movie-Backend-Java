@@ -53,7 +53,7 @@ public class MovieService {
         return movieDtoList;
     }
 
-    //get Movie by Id
+    //get the movie object only 1 movie by id
     public MovieDto getMovie(Long id) {
         Optional<Movie> optionalMovie = repos.findById(id);
 

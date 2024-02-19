@@ -86,7 +86,7 @@ public class UserController {
     }
 
 
-// Add new seen movies
+    // Add new seen movies
     @PostMapping("/user/{userId}/seen-movies")
     public ResponseEntity<Void> setUserSeenMovies(
             @PathVariable Long userId,
@@ -116,26 +116,12 @@ public class UserController {
 
     //set a rating of a movie by user
     @PostMapping("/user/{userId}/rate-movie/{movieId}")
-    public ResponseEntity<Void> rateMovie(@PathVariable Long userId, @PathVariable Long movieId, @RequestParam double rating) {
+    public ResponseEntity<Object> rateMovie(@PathVariable Long userId, @PathVariable Long movieId, @RequestParam double rating) {
         //Call the service method to set the rating;
         service.rateMovie(userId, movieId, rating);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("U heeft een rating geplaatst deze film!");
     }
 
-    //get all a movies rated by the user
-    @GetMapping("user/{userId}/rated-movies")
-    public ResponseEntity<Set<MovieDto>> getUserRatedMovies(@PathVariable Long userId) {
-        // Call the service method to retrieve the user's rated movies
-        Set<MovieDto> ratedMovies = service.getUserRatedMovies(userId);
-
-        // Check if the user exists
-        if (ratedMovies != null) {
-            return ResponseEntity.ok(ratedMovies);
-        } else {
-            // Return 404 Not Found if the user is not found
-            return ResponseEntity.notFound().build();
-        }
-    }
 
 
 

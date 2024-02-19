@@ -10,5 +10,6 @@ public class RatingDto {
     public Long userId;
     public Long movieId;
     public double rating;
-
-    }
+    public User user;
+    public UserDto userDto;
+}

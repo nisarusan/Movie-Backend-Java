@@ -20,13 +20,15 @@ public class MoviesController {
         this.service = service;
     }
 
+
+    //getAll movies
     @GetMapping("/movies")
     public ResponseEntity<List<MovieDto>> getAllMovies() {
         List<MovieDto> movieDto = service.allMovies();
         return ResponseEntity.ok().body(movieDto);
     }
 
-    //get all movies
+    //get the movie object only 1 movie by id
     @GetMapping("/movie/{id}")
     public ResponseEntity<MovieDto> getMovie(@PathVariable Long id) {
         MovieDto movieDto = service.getMovie(id);
