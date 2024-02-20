@@ -35,12 +35,11 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/info").hasRole("USER")
-                .requestMatchers("/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/admins").hasAuthority("ROLE_ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
-                .requestMatchers("/authenticate").permitAll()
-
+//                .requestMatchers(HttpMethod.GET, "/info").hasRole("USER")
+//                .requestMatchers("/users/**").hasAnyRole("ADMIN", "USER")
+//                .requestMatchers("/admins").hasAuthority("ROLE_ADMIN")
+//                .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
+//                .requestMatchers("/authenticate").permitAll()
                 .anyRequest().denyAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();

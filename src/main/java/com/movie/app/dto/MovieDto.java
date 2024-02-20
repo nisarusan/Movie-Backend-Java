@@ -16,7 +16,7 @@ public class MovieDto {
     public int duration;
     public Set<Genre> genre;
     public String description;
-    public double averageRating;
+    public Double averageRating;
     public Set<Rating> ratings;
 
 

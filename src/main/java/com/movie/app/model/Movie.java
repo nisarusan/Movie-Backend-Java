@@ -28,7 +28,7 @@ public class Movie {
     @Column(name = "release_date")
     LocalDate releaseDate;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
@@ -104,8 +104,20 @@ public class Movie {
         this.duration = duration;
     }
 
-    public double getAverageRating() {
-        return averageRating;
+//    public double getAverageRating() {
+//        return averageRating;
+//    }
+    public Double getAverageRating() {
+        if (ratings.isEmpty()) {
+            return null; // No ratings, return null or any default value
+        }
+
+        double totalRating = 0.0;
+        for (Rating rating : ratings) {
+            totalRating += rating.getRating();
+        }
+
+        return totalRating / ratings.size();
     }
 
     public void setAverageRating(double averageRating) {
@@ -131,4 +143,8 @@ public class Movie {
 //    public void setRatings(Set<Rating> ratings) {
 //        this.ratings = ratings;
 //    }
+
+
+
+
 }

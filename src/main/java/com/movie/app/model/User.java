@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -25,6 +25,10 @@ public class User {
 
     @Column
     private String address;
+
+    //this gonna be the bearer token
+    @Column
+    private String apikey;
 
     @Column(name = "profile_url")
     private String profileUrl;
@@ -165,5 +169,13 @@ public class User {
 
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
+    }
+
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
     }
 }

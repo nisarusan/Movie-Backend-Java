@@ -1,6 +1,7 @@
 package com.movie.app.service;
 
 import com.movie.app.dto.MovieDto;
+import com.movie.app.model.Genre;
 import com.movie.app.model.Movie;
 import com.movie.app.model.Rating;
 import com.movie.app.repository.MovieRepository;
@@ -16,10 +17,13 @@ public class MovieService {
 
     private final MovieRepository repos;
     private final RatingRepository ratingRepos;
-    public MovieService(MovieRepository repos, RatingRepository ratingRepos) {
+    private final GenreService genreService;
+
+    public MovieService(MovieRepository repos, RatingRepository ratingRepos, GenreService genreService) {
 
         this.repos = repos;
         this.ratingRepos = ratingRepos;
+        this.genreService = genreService;
 
     }
 
@@ -106,6 +110,7 @@ public class MovieService {
         movieDto.averageRating = movie.getAverageRating();
         movieDto.description = movie.getDescription();
         movieDto.genre = movie.getGenre();
+
 //        movieDto.ratings = movie.getRatings();
         movieDto.director = movie.getDirector();
         movieDto.imageUrl = movie.getImageUrl();

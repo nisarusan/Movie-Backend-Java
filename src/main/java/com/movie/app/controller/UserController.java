@@ -123,6 +123,18 @@ public class UserController {
     }
 
 
+    //    Een HTTP GET-endpoint op het pad "/users/{username}/authorities". Retourneert rollen van gebruiker;
+    @GetMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(service.getAuthorities(username));
+    }
+
+    //Delete the authority
+    @DeleteMapping(value = "/{username}/authorities/{authority}")
+    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+        service.removeAuthority(username, authority);
+        return ResponseEntity.noContent().build();
+    }
 
 
 

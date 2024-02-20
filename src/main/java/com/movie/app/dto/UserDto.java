@@ -24,6 +24,8 @@ public class UserDto {
 
     public String address;
 
+    public String apikey;
+
     public String profileUrl;
     @JsonIgnore
     public Set<Auth> authorities;

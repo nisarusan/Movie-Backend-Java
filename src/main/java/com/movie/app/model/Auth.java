@@ -9,6 +9,8 @@ import java.util.Set;
 @Table(name = "authorities")
 public class Auth implements Serializable {
 
+
+    //Creates authorities role
     @Id
     @Column(nullable = false)
     private String name;
@@ -22,5 +24,13 @@ public class Auth implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

@@ -9,6 +9,8 @@ import com.movie.app.model.Rating;
 import com.movie.app.model.User;
 import com.movie.app.repository.AuthRepository;
 import com.movie.app.repository.UserRepository;
+import com.movie.app.utils.RandomStringGenerator;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,29 +33,72 @@ public class UserService {
 
 
     //create User
+// create User
     public UserDto createUser(UserDto userDto) {
+        // Check if a user with the given username already exists
+        if (repos.findByUsername(userDto.username) != null) {
+            throw new RuntimeException("User with the username already exists.");
+        }
+
+        // Create a new user role
         Auth userRole = new Auth();
         userRole.setName("ROLE_USER"); // Set the identifier value
         rolerepos.save(userRole);
 
-
+        // Map the UserDto to a new User entity using the DTO to User mapper
         User user = dtoToUser(userDto);
-        user.setUsername(userDto.username);
-        user.setPassword(userDto.password);
-        user.setEmail(userDto.email);
-        user.setProfileUrl(userDto.profileUrl);
-        user.setAddress(userDto.address);
-        user.setFavoriteMovie(userDto.favoriteMovie);
-        user.setMoviesRated(userDto.moviesRated);
-        user.setMoviesSeen(userDto.moviesSeen);
 
         // Set the roles directly from the userRole
         user.setAuthorities(Collections.singleton(userRole));
 
+        // Generate and set API key
+        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+        user.setApikey(randomString);
+
+        // Save the user to the repository
         repos.save(user);
+
+        // Map the saved user entity to a UserDto using the User to DTO mapper
         userDto.id = user.getId();
-        return userDto;
+        userDto.apikey = user.getApikey();
+        return userDto(user);
     }
+
+
+
+    //Get autority roles of user
+    public Set<String> getAuthorities(String username) {
+        User user = repos.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        // Extract authority names from the user's authorities
+        return user.getAuthorities().stream()
+                .map(Auth::getName)
+                .collect(Collectors.toSet());
+    }
+
+    //    Verwijdert een autoriteit van een gebruiker op basis van de gebruikersnaam en autoriteit.
+    public void removeAuthority(String username, String authority) {
+        User user = repos.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        Auth authorityToRemove = user.getAuthorities().stream()
+                .filter(a -> a.getName().equalsIgnoreCase(authority))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Authority not found for user: " + username));
+
+        user.getAuthorities().remove(authorityToRemove);
+        repos.save(user);
+    }
+
+
+
 
     //getUser By Id
     public UserDto getUserById(Long userId) {
@@ -88,6 +133,7 @@ public class UserService {
             throw new RuntimeException("User not found with ID: " + userId);
         }
     }
+
 
     // Get favorite movies for a user
     public Set<MovieDto> getUserFavoriteMovies(Long userId) {
@@ -179,6 +225,7 @@ public class UserService {
         userDto.username = user.getUsername();
         userDto.password = user.getPassword();
         userDto.address = user.getAddress();
+        userDto.apikey = user.getApikey();
         userDto.email = user.getEmail();
         userDto.profileUrl = user.getProfileUrl();
         userDto.moviesSeen = user.getMoviesSeen();
@@ -194,6 +241,7 @@ public class UserService {
         user.setUsername(userDto.username);
         user.setPassword(userDto.password);
         user.setAddress(userDto.address);
+        user.setApikey(userDto.apikey);
         user.setEmail(userDto.email);
         user.setProfileUrl(userDto.profileUrl);
         user.setMoviesRated(userDto.moviesRated);
